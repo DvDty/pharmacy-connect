@@ -30,4 +30,11 @@ return [
         'region' => env('AWS_DEFAULT_REGION', 'us-east-1'),
     ],
 
+    'distributors' => [
+        'phoenixpharma' => [
+            'base_url' => env('PHOENIXPHARMA_BASE_URL'),
+            'username' => env('PHOENIXPHARMA_USERNAME'),
+            'password' => env('PHOENIXPHARMA_PASSWORD'),
+        ],
+    ],
 ];
