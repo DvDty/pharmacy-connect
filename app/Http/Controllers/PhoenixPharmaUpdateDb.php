@@ -7,7 +7,7 @@ use App\Models\PhoenixPharmaProduct;
 
 class PhoenixPharmaUpdateDb extends Controller
 {
-    private const FETCH_PER_PAGE = 1000;
+    private const FETCH_PER_PAGE = 500;
 
     public function __invoke(PhoenixPharmaClient $client)
     {
