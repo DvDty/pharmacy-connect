@@ -9,3 +9,8 @@ export default defineConfig()
 		autoprefixer
 	])
 	.withPlugin(vue)
+	.merge({
+		server: {
+			port: 3009
+		}
+	})
