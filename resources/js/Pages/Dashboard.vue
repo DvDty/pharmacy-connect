@@ -1,15 +1,34 @@
 <script setup lang="ts">
+import {PropType, reactive} from 'vue'
 import Layout from '@/Layouts/App.vue'
 import {Head} from '@inertiajs/inertia-vue3'
-import {PropType} from 'vue';
-import {RefreshIcon, SearchIcon} from "@heroicons/vue/solid";
+import {RefreshIcon, SearchIcon} from '@heroicons/vue/solid';
+import axios from 'axios';
 
 const props = defineProps({
     distributors: Array as PropType<Array<App.Models.Distributor>>,
 })
 
+const spinRefreshIconIds = reactive([]);
+
 function displayStatus(updating: boolean): string {
     return updating ? 'Обновяване' : 'В готовност'
+}
+
+async function updateDistributorProducts(distributorId: number): void {
+    spinDistributorIcon(distributorId)
+
+    let response = await axios.get('/api/test')
+
+    stopSpinningDistributorIcon(distributorId)
+}
+
+function spinDistributorIcon(distributorId: number): void {
+    spinRefreshIconIds.push(distributorId)
+}
+
+function stopSpinningDistributorIcon(distributorId: number): void {
+    spinRefreshIconIds.splice(spinRefreshIconIds.indexOf(distributorId), 1)
 }
 </script>
 
@@ -21,7 +40,7 @@ function displayStatus(updating: boolean): string {
             <h2 class="font-semibold text-xl text-gray-800 leading-tight">Medication Search</h2>
         </template>
 
-        <div class="py-6">
+        <div class="pt-5">
             <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
                 <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
                     <div class="p-4 bg-white border-b border-gray-200">Дистрибутори</div>
@@ -32,7 +51,11 @@ function displayStatus(updating: boolean): string {
                         >
                             <div class="px-6 py-4">
                                 <div class="font-bold text-xl mb-2">
-                                    <RefreshIcon class="h-6 w-6 text-blue-500 inline"/>
+                                    <RefreshIcon
+                                        class="h-6 w-6 text-blue-500 inline cursor-pointer"
+                                        :class="[ spinRefreshIconIds.includes(distributor.id) ? 'animate-spin' : '']"
+                                        v-on:click="updateDistributorProducts(distributor.id)"
+                                    />
                                     {{ distributor.name }}
                                 </div>
 
@@ -56,7 +79,7 @@ function displayStatus(updating: boolean): string {
             </div>
         </div>
 
-        <div class="py-3">
+        <div class="pt-5">
             <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
                 <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
                     <div class="p-4 bg-white border-b border-gray-200 flex">
