@@ -14,6 +14,7 @@ use Illuminate\Support\Facades\Http;
 final class Client implements PhoenixPharmaClient
 {
     private ?string $sessionId = null;
+    private ?int $productsCount = null;
 
     public function __construct(string $username, string $password)
     {
@@ -73,12 +74,16 @@ final class Client implements PhoenixPharmaClient
 
     public function productsCount(): int
     {
+        if ($this->productsCount) {
+            return $this->productsCount;
+        }
+
         $response = $this->request()
             ->get(
                 'dataset/reports_all_articles/load.php',
                 ['start' => 0, 'limit' => 0],
             );
 
-        return Arr::get(XML::toArray($response->body()), 'results', 0);
+        return $this->productsCount = Arr::get(XML::toArray($response->body()), 'results', 0);
     }
 }
