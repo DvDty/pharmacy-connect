@@ -8,6 +8,14 @@ use Inertia\Inertia;
 Route::get('/dashboard', function () {
     return Inertia::render('Dashboard', [
         'distributors' => fn() => Distributor::all(),
-        'products' => Inertia::lazy(fn() => PhoenixPharmaProduct::take(10)->get())
+        'products'     => Inertia::lazy(function () {
+            if ($search = request('search')) {
+                return PhoenixPharmaProduct::where('cyrName', 'like', '%' . $search . '%')
+                    ->take(10)
+                    ->get();
+            }
+
+            return [];
+        }),
     ]);
 })->name('dashboard');

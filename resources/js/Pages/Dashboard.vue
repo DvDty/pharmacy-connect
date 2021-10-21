@@ -1,18 +1,26 @@
 <script setup lang="ts">
-import {PropType, reactive} from 'vue'
+import {PropType, reactive, ref, watch} from 'vue'
 import Layout from '@/Layouts/App.vue'
 import {Head} from '@inertiajs/inertia-vue3'
-import {RefreshIcon, SearchIcon} from '@heroicons/vue/solid';
+import {RefreshIcon, SearchIcon} from '@heroicons/vue/solid'
 import {humanizeDate} from '@/helpers'
 import {Inertia} from '@inertiajs/inertia'
-import axios from 'axios';
+import axios from 'axios'
+import {throttle} from 'lodash'
+import useRoute from '@/Hooks/useRoute'
 
 const props = defineProps({
     distributors: Array as PropType<Array<App.Models.Distributor>>,
     products: Array as PropType<Array<App.Models.PhoenixPharmaProduct>>,
 })
 
+const route = useRoute()
+
 const spinRefreshIconIds = reactive([]);
+
+let search = ref('')
+
+watch(search, throttle(search => reloadProducts(search), 1500, {leading: false}))
 
 function displayStatus(updating: boolean): string {
     return updating ? 'Обновяване' : 'В готовност'
@@ -28,7 +36,11 @@ function updateDistributorProducts(distributorId: number): void {
 }
 
 function reloadProducts(search: string): void {
-    Inertia.reload({only: ['products']})
+    Inertia.visit(route('dashboard'), {
+        only: ['products'],
+        data: {search},
+        preserveState: true,
+    })
 }
 
 function reloadDistributors(): void {
@@ -105,7 +117,7 @@ function stopSpinningDistributorIcon(distributorId: number): void {
                     <input
                         type="text"
                         placeholder="Търси..."
-                        name="search"
+                        v-model="search"
                         class="leading-tight border-0 focus:ring-0 w-full"
                         autocomplete="off"
                     >
@@ -138,6 +150,8 @@ function stopSpinningDistributorIcon(distributorId: number): void {
                                                 class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                                                 НЗОК цена
                                             </th>
+
+                                            <!--button-->
                                             <!--<th scope="col" class="relative px-6 py-3">-->
                                             <!--    <span class="sr-only">Edit</span>-->
                                             <!--</th>-->
@@ -188,6 +202,7 @@ function stopSpinningDistributorIcon(distributorId: number): void {
                                                 {{ product.nhifSalePrice }} лв.
                                             </td>
 
+                                            <!--button-->
                                             <!--<td class="px-6 py-2 whitespace-nowrap text-right text-sm font-medium">-->
                                             <!--    <a href="#" class="text-indigo-600 hover:text-indigo-900">Edit</a>-->
                                             <!--</td>-->
