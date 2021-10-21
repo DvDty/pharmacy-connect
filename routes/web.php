@@ -15,7 +15,7 @@ Route::get('/dashboard', function () {
                     ->get();
             }
 
-            return [];
+            return null;
         }),
     ]);
 })->name('dashboard');
