@@ -18,7 +18,7 @@ function displayStatus(updating: boolean): string {
     return updating ? 'Обновяване' : 'В готовност'
 }
 
-function updateDistributor(distributorId: number): void {
+function updateDistributorProducts(distributorId: number): void {
     spinDistributorIcon(distributorId)
 
     axios.post('/api/update-products', {distributorId})
@@ -69,7 +69,7 @@ function stopSpinningDistributorIcon(distributorId: number): void {
                                 <RefreshIcon
                                     class="h-6 w-6 text-blue-500 inline cursor-pointer"
                                     :class="[ spinRefreshIconIds.includes(distributor.id) ? 'animate-spin' : '']"
-                                    v-on:click="updateDistributor(distributor.id)"
+                                    v-on:click="updateDistributorProducts(distributor.id)"
                                 />
                                 {{ distributor.name }}
                             </div>
