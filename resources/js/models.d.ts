@@ -6,6 +6,7 @@ declare namespace App.Models {
         last_updated: string | null;
         products_class: string;
         total_products: number;
+        updated_products: number;
         created_at: string | null;
         updated_at: string | null;
     }
