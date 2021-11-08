@@ -2,6 +2,7 @@
 
 use App\Models\Distributor;
 use App\Models\PhoenixPharmaProduct;
+use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
@@ -19,3 +20,7 @@ Route::get('/dashboard', function () {
         }),
     ]);
 })->name('dashboard');
+
+Route::get('/artisan/migrate', function () {
+    Artisan::call('migrate', ["--force" => true]);
+});
