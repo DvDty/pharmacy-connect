@@ -22,6 +22,12 @@ let search = ref('')
 
 watch(search, throttle(search => reloadProducts(search), 1500, {leading: false}))
 
+setInterval(function () {
+    if (props.distributors.some(distributor => distributor.updating)) {
+        reloadDistributors()
+    }
+}, 5000)
+
 function displayStatus(updating: boolean): string {
     return updating ? 'Обновяване' : 'В готовност'
 }
@@ -45,10 +51,6 @@ function reloadProducts(search: string): void {
 
 function reloadDistributors(): void {
     Inertia.reload({only: ['distributors']})
-
-    if (props.distributors.some(distributor => distributor.updating)) {
-        setTimeout(reloadDistributors, 1500)
-    }
 }
 
 function spinDistributorIcon(distributorId: number): void {
