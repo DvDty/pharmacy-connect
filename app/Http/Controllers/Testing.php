@@ -19,15 +19,15 @@ class Testing extends Controller
                 'updated_products' => 0,
             ]);
 
-        foreach (range(1, 20) as $item) {
-            sleep(1.3);
+        foreach (range(1, 2) as $item) {
+            sleep(2);
 
             DB::table('distributors')
                 ->where('id', 1)
                 ->update([
                     'updating'         => true,
                     'last_updated'     => Carbon::now(),
-                    'updated_products' => $item * 100,
+                    'updated_products' => $item * 1000,
                 ]);
         }
 
