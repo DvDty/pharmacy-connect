@@ -44,31 +44,11 @@ function reloadProducts(search: string): void {
 }
 
 function reloadDistributors(): void {
-    // Inertia.visit(route('dashboard'), {
-    //     only: ['distributors'],
-    //     preserveState: true,
-    // })
-
     Inertia.reload({only: ['distributors']})
 
-    console.log(props.distributors);
-    console.log(props.distributors[0].updating);
-    console.log(props.distributors.some(distributor => distributor.updating == 1));
-    console.log(props.distributors.some(distributor => distributor.updating == 0));
-    setTimeout(reloadDistributors, 2000)
-    // if (props.distributors.some(distributor => distributor.updating === 1)) {
-    //     let distributor = props.distributors[0]
-    //     console.group()
-    //     console.log(distributor.updating);
-    //     console.log(distributor.updating == true);
-    //     console.log(distributor.updating == false);
-    //     console.log(distributor.updating === true);
-    //     console.log(distributor.updating === false);
-    //     console.log('v2');
-    //     console.groupEnd()
-    //
-    //     setTimeout(reloadDistributors, 2000)
-    // }
+    if (props.distributors.some(distributor => distributor.updating)) {
+        setTimeout(reloadDistributors, 1500)
+    }
 }
 
 function spinDistributorIcon(distributorId: number): void {
