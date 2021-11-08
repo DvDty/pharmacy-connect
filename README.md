@@ -1,6 +1,6 @@
-## Pharmacy Connect
+# Pharmacy Connect
 
-# Set up
+## Set up
 
 1. `composer install`
 2. `yarn install`
