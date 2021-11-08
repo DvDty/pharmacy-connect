@@ -89,10 +89,6 @@ function stopSpinningDistributorIcon(distributorId: number): void {
                             </div>
 
                             <p class="text-gray-700 text-base">
-                                {{ distributor.updated_products }} / {{ distributor.total_products }}
-                            </p>
-
-                            <p class="text-gray-700 text-base">
                                 Статус:
                                 <span
                                     class="inline-block rounded-full px-2 py-1 text-sm font-semibold text-gray-700"
@@ -102,8 +98,20 @@ function stopSpinningDistributorIcon(distributorId: number): void {
                                 </span>
                             </p>
 
-                            <p class="text-gray-700 text-base">Последно обновяване:</p>
-                            <p class="text-gray-700 text-base">{{ humanizeDate(distributor.last_updated) }}</p>
+                            <p class="text-gray-700 text-base">
+                                <span v-if="distributor.updating">
+                                    {{ distributor.updated_products }} / {{ distributor.total_products }}
+                                </span>
+
+                                <span v-else>
+                                    {{ distributor.total_products }} продукта
+                                </span>
+                            </p>
+
+                            <div v-if="!distributor.updating">
+                                <p class="text-gray-700 text-base">Последно обновяване:</p>
+                                <p class="text-gray-700 text-base">{{ humanizeDate(distributor.last_updated) }}</p>
+                            </div>
                         </div>
                     </div>
                 </div>
