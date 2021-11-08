@@ -8,7 +8,13 @@ use Inertia\Inertia;
 
 Route::get('/dashboard', function () {
     return Inertia::render('Dashboard', [
-        'distributors' => fn() => Distributor::all(),
+        'distributors' => function() {
+            $distributors = Distributor::all();
+
+            logger($distributors);
+
+            return $distributors;
+        },
         'products'     => Inertia::lazy(function () {
             if ($search = request('search')) {
                 return PhoenixPharmaProduct::where('cyrName', 'like', '%' . $search . '%')
