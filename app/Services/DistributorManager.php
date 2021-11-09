@@ -14,7 +14,7 @@ class DistributorManager extends Manager
      */
     public function getDefaultDriver()
     {
-        throw new Exception('Driver must be specified.');
+        throw new Exception('[DistributorManager] Driver must be specified.');
     }
 
     public function getDrivers(): Collection

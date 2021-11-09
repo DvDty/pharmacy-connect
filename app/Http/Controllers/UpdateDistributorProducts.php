@@ -20,9 +20,8 @@ class UpdateDistributorProducts extends Controller
             $distributor = Distributor::findOrFail($distributorId);
 
             $distributorClient = $distributorManager->getDriver($distributorId);
-        } catch (Throwable $e) {
-            var_dump($e->getMessage());
-            return response()->json(['message' => 'Distributor not found.'], 404);
+        } catch (Throwable $exception) {
+            return response()->json(['message' => $exception->getMessage()], 404);
         }
 
         $distributor->update([
