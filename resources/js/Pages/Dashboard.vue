@@ -36,9 +36,11 @@ function updateDistributorProducts(distributorId: number): void {
     spinDistributorIcon(distributorId)
 
     axios.post('/api/update-products', {distributorId})
-    reloadDistributors()
 
-    setTimeout(() => stopSpinningDistributorIcon(distributorId), 2000)
+    setTimeout(() => {
+        stopSpinningDistributorIcon(distributorId)
+        reloadDistributors()
+    }, 2500)
 }
 
 function reloadProducts(search: string): void {
@@ -101,7 +103,7 @@ function stopSpinningDistributorIcon(distributorId: number): void {
                             <p class="text-gray-700 text-base">
                                 <span v-if="distributor.updating">
                                     {{ distributor.updated_products }} / {{ distributor.total_products }}
-                                    ({{ distributor.updated_products / distributor.total_products * 100 }}%)
+                                    ({{ Math.floor(distributor.updated_products / distributor.total_products * 100) }}%)
                                 </span>
 
                                 <span v-else>
