@@ -2,8 +2,7 @@
 
 namespace App\Services;
 
-use App\Contracts\PhoenixPharmaClient;
-use App\Services\PhoenixPharma\Client;
+use App\Services\PhoenixPharma\Client as PhoenixPharmaClient;
 use Exception;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Manager;
@@ -23,9 +22,19 @@ class DistributorManager extends Manager
         return collect(array_keys(config('services.distributors')));
     }
 
-    public function createPhoenixPharmaDriver(): Client
+    public function createPhoenixPharmaDriver(): PhoenixPharmaClient
     {
-        // resolve
-        return app()->make(PhoenixPharmaClient::class);
+        return resolve(PhoenixPharmaClient::class);
+    }
+
+    /**
+     * @throws Exception
+     */
+    public function getDriver(int $distributorId): DistributorClient
+    {
+        return match ($distributorId) {
+            1 => $this->createPhoenixPharmaDriver(),
+            default => $this->getDefaultDriver(),
+        };
     }
 }

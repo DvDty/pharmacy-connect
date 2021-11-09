@@ -2,16 +2,17 @@
 
 namespace App\Services\PhoenixPharma;
 
-use App\Contracts\PhoenixPharmaClient;
 use App\Helpers\ArrayHelper;
 use App\Helpers\XML;
+use App\Models\PhoenixPharmaProduct;
+use App\Services\DistributorClient;
 use App\Services\UnsuccessfulLoginAttempt;
 use Illuminate\Http\Client\PendingRequest;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Http;
 
-final class Client implements PhoenixPharmaClient
+final class Client implements DistributorClient
 {
     private ?string $sessionId = null;
     private ?int $productsCount = null;
@@ -48,7 +49,7 @@ final class Client implements PhoenixPharmaClient
         $this->sessionId = $response->cookies()->getCookieByName('PHPSESSID');
     }
 
-    public function products(int $start, int $limit): Collection
+    public function getProducts(int $start, int $limit): Collection
     {
         $response = $this->request()
             ->get(
@@ -72,7 +73,7 @@ final class Client implements PhoenixPharmaClient
         return $products;
     }
 
-    public function productsCount(): int
+    public function getProductsCount(): int
     {
         if ($this->productsCount) {
             return $this->productsCount;
@@ -85,5 +86,10 @@ final class Client implements PhoenixPharmaClient
             );
 
         return $this->productsCount = Arr::get(XML::toArray($response->body()), 'results', 0);
+    }
+
+    public function getProductClass(): string
+    {
+        return PhoenixPharmaProduct::class;
     }
 }

@@ -101,6 +101,7 @@ function stopSpinningDistributorIcon(distributorId: number): void {
                             <p class="text-gray-700 text-base">
                                 <span v-if="distributor.updating">
                                     {{ distributor.updated_products }} / {{ distributor.total_products }}
+                                    ({{ distributor.updated_products / distributor.total_products * 100 }}%)
                                 </span>
 
                                 <span v-else>

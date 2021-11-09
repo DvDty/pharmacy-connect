@@ -1,7 +1,6 @@
 <?php
 
-use App\Http\Controllers\PhoenixPharmaUpdateDb;
-use App\Http\Controllers\Testing;
+use App\Http\Controllers\UpdateDistributorProducts;
 use Illuminate\Support\Facades\Route;
 
-Route::post('/update-products', Testing::class);
+Route::post('/update-products', UpdateDistributorProducts::class);
