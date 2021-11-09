@@ -14,6 +14,8 @@ class UpdateDistributorProducts extends Controller
 
     public function __invoke(DistributorManager $distributorManager): JsonResponse
     {
+        set_time_limit(10 * 60);
+
         try {
             $distributorId = request('distributorId');
 
