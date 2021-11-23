@@ -10,7 +10,7 @@ use Throwable;
 
 class UpdateDistributorProducts extends Controller
 {
-    private const FETCH_PER_PAGE = 500;
+    private const FETCH_PER_PAGE = 125;
 
     public function __invoke(DistributorManager $distributorManager): JsonResponse
     {
