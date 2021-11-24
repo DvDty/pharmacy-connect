@@ -30,7 +30,7 @@ class DistributorManager extends Manager
     /**
      * @throws Exception
      */
-    public function getDriver(int $distributorId): DistributorClient
+    public function getDriver(int $distributorId): DistributorClientContact
     {
         return match ($distributorId) {
             1 => $this->createPhoenixPharmaDriver(),

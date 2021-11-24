@@ -4,7 +4,7 @@ namespace App\Services;
 
 use Illuminate\Support\Collection;
 
-interface DistributorClient
+interface DistributorClientContact
 {
     public function getProducts(int $start, int $limit): Collection;
 

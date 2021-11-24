@@ -5,14 +5,15 @@ namespace App\Services\PhoenixPharma;
 use App\Helpers\ArrayHelper;
 use App\Helpers\XML;
 use App\Models\PhoenixPharmaProduct;
-use App\Services\DistributorClient;
+use App\Services\BaseDistributorClient;
+use App\Services\DistributorClientContact;
 use App\Services\UnsuccessfulLoginAttempt;
 use Illuminate\Http\Client\PendingRequest;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Http;
 
-final class Client implements DistributorClient
+final class Client extends BaseDistributorClient implements DistributorClientContact
 {
     private ?string $sessionId = null;
     private ?int $productsCount = null;
@@ -49,7 +50,7 @@ final class Client implements DistributorClient
         $this->sessionId = $response->cookies()->getCookieByName('PHPSESSID');
     }
 
-    public function getProducts(int $start, int $limit): Collection
+    protected function fetchAndParseProducts(int $start, int $limit): Collection
     {
         $response = $this->request()
             ->get(
